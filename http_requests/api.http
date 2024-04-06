@@ -1,0 +1,11 @@
+POST http://localhost:3000/signup HTTP/1.1
+content-type: application/json
+
+{
+    "name": "John Doe",
+    "email": "pedro1233444@gmail.com",
+    "cpf": "87748248800",
+    "isDriver": true,
+    "carPlate": "ABC1234",
+    "isPassenger": false
+}

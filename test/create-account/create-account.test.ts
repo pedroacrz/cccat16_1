@@ -17,6 +17,23 @@ describe("Create Account Use Case", () => {
     expect(response.account_id).toBeDefined();
   });
 
+  test("should be able to create driver account", async () => {
+    const input = {
+      name: "John Doe",
+      email: `john.doe${Math.random()}@gmail.com`,
+      cpf: "87748248800",
+      isPassenger: false,
+      isDriver: true,
+      carPlate: "ABC1999",
+    };
+
+    const accountRepository = new InMemoryAccountRepository();
+    const createAccountUseCase = new CreateAccountUseCase(accountRepository);
+
+    const response = await createAccountUseCase.execute(input);
+    expect(response.account_id).toBeDefined();
+  });
+
   test("should not be able to create passager account with same email", async () => {
     const email = `john.doe@gmail.com`;
     const input = {
@@ -105,6 +122,38 @@ describe("Create Account Use Case", () => {
     );
   });
 
+  test("should not be able to create passager account with cpf every 9", async () => {
+    const input = {
+      name: "John Doe",
+      email: `john${Math.random()}@john.com`,
+      cpf: "99999999999",
+      isPassenger: true,
+    };
+
+    const accountRepository = new InMemoryAccountRepository();
+    const createAccountUseCase = new CreateAccountUseCase(accountRepository);
+
+    await expect(() => createAccountUseCase.execute(input)).rejects.toThrow(
+      "Cpf inválido"
+    );
+  });
+
+  test("should not be able to create passager account with cpf < 11", async () => {
+    const input = {
+      name: "John Doe",
+      email: `john${Math.random()}@john.com`,
+      cpf: "8774824",
+      isPassenger: true,
+    };
+
+    const accountRepository = new InMemoryAccountRepository();
+    const createAccountUseCase = new CreateAccountUseCase(accountRepository);
+
+    await expect(() => createAccountUseCase.execute(input)).rejects.toThrow(
+      "Cpf inválido"
+    );
+  });
+
   test("should not be able to create driver account with carPlate  invalid", async () => {
     const input = {
       name: "John Doe",
@@ -120,6 +169,55 @@ describe("Create Account Use Case", () => {
 
     await expect(() => createAccountUseCase.execute(input)).rejects.toThrow(
       "Placa inválida"
+    );
+  });
+
+  test("should not be able to create driver account with carPlate invalid", async () => {
+    const input = {
+      name: "John Doe",
+      email: `john${Math.random()}@john.com`,
+      cpf: "87748248800",
+      isPassenger: false,
+      isDriver: true,
+    };
+
+    const accountRepository = new InMemoryAccountRepository();
+    const createAccountUseCase = new CreateAccountUseCase(accountRepository);
+
+    await expect(() => createAccountUseCase.execute(input)).rejects.toThrow(
+      "Placa inválida"
+    );
+  });
+
+  test("should not be able to create driver account without cpf", async () => {
+    const input = {
+      name: "John Doe",
+      email: `john${Math.random()}@john.com`,
+      isPassenger: false,
+      isDriver: true,
+    };
+
+    const accountRepository = new InMemoryAccountRepository();
+    const createAccountUseCase = new CreateAccountUseCase(accountRepository);
+
+    await expect(() => createAccountUseCase.execute(input)).rejects.toThrow(
+      "Cpf inválido"
+    );
+  });
+
+  test("should not be able to create driver account without isDriver or isPassenger", async () => {
+    const input = {
+      name: "John Doe",
+      email: `john${Math.random()}@john.com`,
+      cpf: "87748248800",
+      carPlate: "ABC199",
+    };
+
+    const accountRepository = new InMemoryAccountRepository();
+    const createAccountUseCase = new CreateAccountUseCase(accountRepository);
+
+    await expect(() => createAccountUseCase.execute(input)).rejects.toThrow(
+      "Tipo de conta inválido"
     );
   });
 });

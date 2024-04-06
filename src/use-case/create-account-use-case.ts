@@ -12,13 +12,13 @@ export class CreateAccountUseCase {
     if (!input.email || !input.email.match(/^(.+)@(.+)$/))
       throw new Error("Email inválido");
 
-    if (!input.cpf || !validate(input.cpf)) throw new Error("Cpf inválido");
+    if (!validate(input.cpf)) throw new Error("Cpf inválido");
 
     if (
       (!input.isPassenger && !input.isDriver) ||
       (input.isDriver && input.isPassenger)
     )
-      throw new Error("Invalid account type");
+      throw new Error("Tipo de conta inválido");
 
     if (input.isDriver)
       if (!input.carPlate?.match(/[A-Z]{3}[0-9]{4}/))
@@ -28,7 +28,7 @@ export class CreateAccountUseCase {
       input.email
     );
 
-    const hasUserWithCpf = await this.accountRepository.findByCpf(input.cpf);
+    const hasUserWithCpf = await this.accountRepository.findByCpf(input.cpf!);
 
     if (hasUserWithEmail?.email)
       throw new Error("Usuário já cadastrado com esse email");
@@ -42,9 +42,9 @@ export class CreateAccountUseCase {
       account_id,
       input.name,
       input.email,
-      input.cpf,
+      input.cpf!,
       input.carPlate ? input.carPlate : "",
-      input.isPassenger,
+      input.isPassenger ? input.isPassenger : false,
       input.isDriver ? input.isDriver : false
     );
 
@@ -56,8 +56,8 @@ export class CreateAccountUseCase {
 type Input = {
   name: string;
   email: string;
-  cpf: string;
-  isPassenger: boolean;
+  cpf?: string;
+  isPassenger?: boolean;
   carPlate?: string;
   isDriver?: boolean;
 };

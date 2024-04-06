@@ -20,8 +20,7 @@ export class CreateAccountController {
       return response.status(201).send();
     } catch (err) {
       if (err instanceof Error) {
-        console.log(err.message);
-        return response.status(422).send();
+        return response.status(422).json({ error: err.message });
       }
       return response.status(500).send();
     }

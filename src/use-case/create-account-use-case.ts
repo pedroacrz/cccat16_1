@@ -6,6 +6,24 @@ export class CreateAccountUseCase {
   constructor(private readonly accountRepository: IAccountRepository) {}
 
   async execute(input: Input): Promise<{ account_id: string }> {
+    if (!input.name || !input.name.match(/[a-zA-Z] [a-zA-Z]+/))
+      throw new Error("Nome inválido");
+
+    if (!input.email || !input.email.match(/^(.+)@(.+)$/))
+      throw new Error("Email inválido");
+
+    if (!input.cpf || !validate(input.cpf)) throw new Error("Cpf inválido");
+
+    if (
+      (!input.isPassenger && !input.isDriver) ||
+      (input.isDriver && input.isPassenger)
+    )
+      throw new Error("Invalid account type");
+
+    if (input.isDriver)
+      if (!input.carPlate?.match(/[A-Z]{3}[0-9]{4}/))
+        throw new Error("Placa inválida");
+
     const hasUserWithEmail = await this.accountRepository.findByEmail(
       input.email
     );
@@ -17,17 +35,6 @@ export class CreateAccountUseCase {
 
     if (hasUserWithCpf?.cpf)
       throw new Error("Usuário já cadastrado com esse cpf");
-
-    if (!input.name.match(/[a-zA-Z] [a-zA-Z]+/))
-      throw new Error("Nome inválido");
-
-    if (!input.email.match(/^(.+)@(.+)$/)) throw new Error("Email inválido");
-
-    if (!validate(input.cpf)) throw new Error("Cpf inválido");
-
-    if (input.isDriver)
-      if (!input.carPlate?.match(/[A-Z]{3}[0-9]{4}/))
-        throw new Error("Placa inválida");
 
     const account_id = crypto.randomUUID();
 

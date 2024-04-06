@@ -4,7 +4,7 @@ Para mais informações acesse:
 
 https://branas.io
 
-##### Requisitos
+## Requisitos
 
 Docker -> https://docs.docker.com/get-docker/
 
@@ -18,20 +18,48 @@ Npm -> https://docs.npmjs.com/getting-started
 
 1 - Criar o container do Postgres
 
-1.1 - Rode no seu terminal: sudo docker-compose up -d
+1.1 - Rode:
 
-// Case tenha erro de credenciais, rode: sudo docker pull postgres
+```terminmal
+ sudo docker-compose up -d
+```
 
-// e depois rode o sudo docker-compose up -d
+// Case tenha erro de credenciais, rode:
 
-1.2 - Verifique se o container está rodando: sudo docker ps
+```terminal
+sudo docker pull postgres
+```
+
+// e depois rode:
+
+```terminal
+sudo docker-compose up -d
+```
+
+1.2 - Verifique se o container está rodando:
+
+```terminmal
+ sudo docker ps
+```
 
 2 - Criar o schema do banco
 
-2.1 - Rode no seu terminal: npm install
+2.1 - Rode:
 
-2.2 - Rode no seu terminal: npx ts-node seeds/create-database-postgres/index.ts
+```terminmal
+ npm install
+```
+
+2.2 - Rode:
+
+```terminmal
+ npx ts-node seeds/create-database-postgres/index.ts
+```
 
 3 - Rode o projeto os testes do projeto
 
-3.1 - npx jest test/create-account/create-account.test.ts
+3.1 - Rode:
+
+```terminmal
+ npx jest test/create-account/create-account.test.ts
+```

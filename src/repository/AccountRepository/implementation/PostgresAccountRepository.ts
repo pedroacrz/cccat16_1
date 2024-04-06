@@ -4,11 +4,7 @@ import { Account } from "../../../entity/Account";
 import { IAccountRepository } from "../IAccountRepository";
 
 class PostgresAccountRepository implements IAccountRepository {
-  constructor() {
-    console.log(
-      `postgres://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/postgres`
-    );
-  }
+  constructor() {}
   async findByEmail(email: string): Promise<Account | undefined> {
     const connection = await pgp()(
       `postgres://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/postgres`

@@ -39,7 +39,7 @@ sudo docker-compose up -d
 1.2 - Verifique se o container está rodando:
 
 ```terminmal
- sudo docker ps
+sudo docker ps
 ```
 
 2 - Criar o schema do banco
@@ -47,13 +47,13 @@ sudo docker-compose up -d
 2.1 - Rode:
 
 ```terminmal
- npm install
+npm install
 ```
 
 2.2 - Rode:
 
 ```terminmal
- npx ts-node seeds/create-database-postgres/index.ts
+npx ts-node seeds/create-database-postgres/index.ts
 ```
 
 3 - Rode o projeto os testes do projeto
@@ -61,5 +61,5 @@ sudo docker-compose up -d
 3.1 - Rode:
 
 ```terminmal
- npx jest test/create-account/create-account.test.ts
+npx jest test/create-account/create-account.test.ts
 ```
